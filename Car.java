@@ -3,6 +3,7 @@
 
 /*An extra attribute namely private double a[] is made to include the direction of motion or speed(both same) thus helping in updating the coordinates of the car. Corresponding to the attribute a function namely public void vvector(double e,double f,double g) is also made, which takes the components of speed vector in x,y and z direction as input in the variables e,f and g. Further in the function the components are divided by the modulus of the so called vector inputted so the it could be converted in  a unit vector.  */
 
+import java.util.*;
 public class Car{
     private String make;
     private String model;
@@ -12,7 +13,7 @@ public class Car{
     private int x;
     private int y;
     private int z;
-
+    
     public Car(String make,String model, int year, int speed,int x,int y,int z){
         this.make=make;
         this.model=model;
@@ -92,16 +93,39 @@ public class Car{
         int xdiff=car2.getX()-this.x;
         int ydiff=car2.getY()-this.y;
         int zdiff=car2.getZ()-this.z;
-        double dist=Math.sqrt(xdiff*xdiff+ydiff*ydiff+zdiff*zdiff);
-        int relspeed=this.speed-car2.speed;
-        if(relspeed>0)
+        int relspeedX=this.speed*(int)this.a[0]-car2.speed*(int)car2.a[0];
+        int relspeedY=this.speed*(int)this.a[1]-car2.speed*(int)car2.a[1];
+        int relspeedZ=this.speed*(int)this.a[2]-car2.speed*(int)car2.a[2];
+        int time[]=new int[3];
+        if(relspeedX==0||relspeedY==0||relspeedZ==0)
+            return Double.POSITIVE_INFINITY;
+        time[0]=xdiff/relspeedX;
+        time[1]=ydiff/relspeedY;
+        time[2]=zdiff/relspeedZ;
+        Arrays.sort(time);
+        int time2[]=new int [3];
+        int k=0;
+        for(int i=0;i<2;i++)
         {
-            return dist/relspeed;
+            if(time[i]!=0)
+                time2[k++]=time[i];
         }
-        if(relspeed==0&&dist==0)
-        return 0.0;
+        if(k==0)
+            return 0.0;
+        else if(k==1)
+            return time2[0];
+        else if(k==2)
+        {
+            if(time2[0]==time2[1])
+                return time2[0];
+            else return Double.POSITIVE_INFINITY;
+        }
         else
-        return Double.POSITIVE_INFINITY;
+        {
+            if(time[0]==time[1]&&time[0]==time[2]&&time[1]==time[2])
+                return time[0];
+            else return Double.POSITIVE_INFINITY;
+        }
     }
 }
 
