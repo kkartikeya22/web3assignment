@@ -97,34 +97,42 @@ public class Car{
         int relspeedY=this.speed*(int)this.a[1]-car2.speed*(int)car2.a[1];
         int relspeedZ=this.speed*(int)this.a[2]-car2.speed*(int)car2.a[2];
         int time[]=new int[3];
-        if(relspeedX==0||relspeedY==0||relspeedZ==0)
-            return Double.POSITIVE_INFINITY;
-        time[0]=xdiff/relspeedX;
-        time[1]=ydiff/relspeedY;
-        time[2]=zdiff/relspeedZ;
-        Arrays.sort(time);
-        int time2[]=new int [3];
         int k=0;
-        for(int i=0;i<2;i++)
-        {
-            if(time[i]!=0)
-                time2[k++]=time[i];
-        }
+        
+        //for x direction
+       if(relspeedX!=0&&xdiff!=0)
+           time[k++]=xdiff/relspeedX;
+       if(relspeedX==0&& xdiff!=0)
+           return Double.POSITIVE_INFINITY;
+        
+        //for Y direction
+       if(relspeedY!=0&&ydiff!=0)
+           time[k++]=ydiff/relspeedY;
+       if(relspeedY==0&& ydiff!=0)
+           return Double.POSITIVE_INFINITY;
+        
+        //for x direction
+       if(relspeedZ!=0&& zdiff!=0)
+           time[k++]=zdiff/relspeedZ;
+       if(relspeedZ==0&& zdiff!=0)
+           return Double.POSITIVE_INFINITY;
+        
         if(k==0)
             return 0.0;
         else if(k==1)
-            return time2[0];
+            return (double)time[0];
         else if(k==2)
         {
-            if(time2[0]==time2[1])
-                return time2[0];
+            if(time[0]==time[1])
+                return (double)time[0];
             else return Double.POSITIVE_INFINITY;
         }
         else
         {
-            if(time[0]==time[1]&&time[0]==time[2]&&time[1]==time[2])
-                return time[0];
-            else return Double.POSITIVE_INFINITY;
+            if(time[0]==time[1]&& time[0]==time[2] && time[1]==time[2])
+                return (double)time[0];
+            else
+                return Double.POSITIVE_INFINITY;
         }
     }
 }
